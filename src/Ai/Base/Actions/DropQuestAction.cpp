@@ -64,12 +64,10 @@ bool DropQuestAction::Execute(Event event)
     return true;
 }
 
-bool CleanQuestLogAction::Execute(Event event)
+bool CleanQuestLogAction::Execute(Event /*event*/)
 {
-    Player* requester = event.getOwner() ? event.getOwner() : GetMaster();
-    if (!requester)
-        return false;
-
+    // No requester check: random bots have no master, and requiring one meant they never
+    // dropped grey quests and kept walking back to finish them in starting zones.
     if (!sPlayerbotAIConfig.dropObsoleteQuests)
         return false;
 
