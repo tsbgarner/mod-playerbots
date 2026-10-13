@@ -610,10 +610,11 @@ void PlayerbotAI::HandleCommand(uint32 type, std::string const& text, Player& fr
 
     std::string filtered = text;
 
-    // Every whisper reaches here as a possible command. A bot nobody owns refuses silently,
-    // so chat whispers get only mod-ollama-chat's answer, not "Invite me to your group first".
+    // Every whisper reaches here as a possible command. Refusals are always silent, so a chat
+    // whisper gets only mod-ollama-chat's answer, not "Invite me to your group first". Testing
+    // for a master was not enough: a random bot keeps the player it last grouped with as master.
     if (!IsAllowedCommand(filtered) && !GetSecurity()->CheckLevelFor(PlayerbotSecurityLevel::PLAYERBOT_SECURITY_INVITE,
-                                                                     type != CHAT_MSG_WHISPER || !GetMaster(), &fromPlayer))
+                                                                     true, &fromPlayer))
         return;
 
     if (type == CHAT_MSG_ADDON)
@@ -681,7 +682,7 @@ void PlayerbotAI::HandleCommand(uint32 type, std::string const& text, Player& fr
 
     if (!IsAllowedCommand(filtered) &&
         !GetSecurity()->CheckLevelFor(PlayerbotSecurityLevel::PLAYERBOT_SECURITY_ALLOW_ALL,
-                                      type != CHAT_MSG_WHISPER || !GetMaster(), &fromPlayer))
+                                      true, &fromPlayer))
         return;
 
     if (type == CHAT_MSG_RAID_WARNING && filtered.find(bot->GetName()) != std::string::npos &&
@@ -957,7 +958,7 @@ bool PlayerbotAI::IsAllowedCommand(std::string const text)
 
 void PlayerbotAI::HandleCommand(uint32 type, std::string const text, Player* fromPlayer)
 {
-    if (!GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, type != CHAT_MSG_WHISPER || !GetMaster(), fromPlayer))
+    if (!GetSecurity()->CheckLevelFor(PLAYERBOT_SECURITY_INVITE, true, fromPlayer))
         return;
 
     if (type == CHAT_MSG_ADDON)

@@ -19,6 +19,12 @@ bool AutoMaintenanceOnLevelupAction::Execute(Event /*event*/)
     AutoTeleportForLevel();
     AutoUpgradeEquip();
 
+    // Quests only turn grey on a level-up, so drop them now. The periodic "clean quest log"
+    // triggers rarely win against other actions (priority 1, and the maintenance strategy
+    // is not given to random bots), which left random bots carrying grey quests.
+    if (sRandomPlayerbotMgr.IsRandomBot(bot))
+        botAI->DoSpecificAction("clean quest log", Event(), true);
+
     return true;
 }
 
