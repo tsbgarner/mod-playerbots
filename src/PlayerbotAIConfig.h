@@ -374,6 +374,7 @@ public:
     bool freeMethodLoot;
     int32 lootNeedRollLevel;
     bool lootGreedRollLevel;
+    uint32 lootNeedLevelLookahead;
     bool lootRollRecipe;
     bool lootRollDisenchant;
     std::string autoPickReward;
