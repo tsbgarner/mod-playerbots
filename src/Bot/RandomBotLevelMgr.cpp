@@ -1150,6 +1150,13 @@ public:
 
     void OnPlayerLevelChanged(Player* player, uint8 oldLevel) override
     {
+        // Drop quests that just turned grey. The level-up action does this too, but it
+        // runs off the SMSG_LEVELUP_INFO packet trigger and missed about 4% of level-ups
+        // (8 of 187 in a 25-minute test); this hook fires on every level change.
+        if (sRandomPlayerbotMgr.IsRandomBot(player))
+            if (PlayerbotAI* botAI = GET_PLAYERBOT_AI(player))
+                botAI->DoSpecificAction("clean quest log", Event(), true);
+
         if (!sPlayerbotAIConfig.resetBotLevelEnabled)
             return;
         RandomBotLevelMgr::instance().OnBotLevelChanged(player, oldLevel);
