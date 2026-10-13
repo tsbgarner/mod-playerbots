@@ -321,7 +321,7 @@ AiPlayerbot.LootNeedRollLevel = 1
 AiPlayerbot.LootGreedRollLevel = 0
 
 # Treat weapons and armor up to this many levels above the bot as upgrades it can grow into:
-# the bot rolls NEED (GREED when a real player is in its group) and keeps the item until it can
+# the bot rolls NEED, including against real players in its group, and keeps the item until it can
 # wear it, unless it already holds something at least as good for that slot.
 # Default: 0 (disabled)
 AiPlayerbot.LootNeedLevelLookahead = 0

@@ -13,21 +13,6 @@
 #include "PlayerbotAIConfig.h"
 #include "Playerbots.h"
 
-static bool GroupHasRealPlayer(Player* bot)
-{
-    Group* group = bot->GetGroup();
-    if (!group)
-        return false;
-
-    for (GroupReference* ref = group->GetFirstMember(); ref; ref = ref->next())
-    {
-        Player* member = ref->GetSource();
-        if (member && member != bot && IsRealPlayer(member))
-            return true;
-    }
-    return false;
-}
-
 bool LootRollAction::Execute(Event /*event*/)
 {
     Group* group = bot->GetGroup();
@@ -82,8 +67,7 @@ bool LootRollAction::Execute(Event /*event*/)
                     if (usage == ITEM_USAGE_EQUIP || usage == ITEM_USAGE_REPLACE || usage == ITEM_USAGE_BAD_EQUIP)
                         vote = NEED;
                     else if (usage == ITEM_USAGE_KEEP)
-                        // An upgrade for a few levels on: need among bots, but don't take it off a real player.
-                        vote = GroupHasRealPlayer(bot) ? GREED : NEED;
+                        vote = NEED;  // an upgrade a few levels on (LootNeedLevelLookahead)
                     else if (usage != ITEM_USAGE_NONE)
                         vote = GREED;
                     break;
