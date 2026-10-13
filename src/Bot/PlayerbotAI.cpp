@@ -1249,6 +1249,10 @@ void PlayerbotAI::HandleBotOutgoingPacket(WorldPacket const& packet)
                     if (HasGameClientMaster() && guid1 != GetMaster()->GetGUID())
                         return;
 
+                    // Real players get replies from mod-ollama-chat; canned texts here would talk over it.
+                    if (!isFromFreeBot)
+                        return;
+
                     auto itemIds = GetChatHelper()->ExtractAllItemIds(message);
                     if (message.starts_with(sPlayerbotAIConfig.toxicLinksPrefix) &&
                         (itemIds.size() > 0 || GetChatHelper()->ExtractAllQuestIds(message).size() > 0) &&
