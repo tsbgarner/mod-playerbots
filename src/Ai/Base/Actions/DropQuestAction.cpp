@@ -68,7 +68,7 @@ bool CleanQuestLogAction::Execute(Event /*event*/)
 {
     // No requester check: random bots have no master, and requiring one meant they never
     // dropped grey quests and kept walking back to finish them in starting zones.
-    if (!sPlayerbotAIConfig.dropObsoleteQuests)
+    if (!sPlayerbotAIConfig.DropObsoleteQuests)
         return false;
 
     // Only output this message if "debug rpg" strategy is enabled
